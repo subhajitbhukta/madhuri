@@ -49,7 +49,7 @@
   const flowerDropLayer = document.getElementById('flowerDropLayer');
   const audio = document.getElementById('birthdayMusic');
   const musicBtn = document.getElementById('musicToggle');
-  const musicLabel = document.getElementById('musicLabel');
+  const musicIcon = document.getElementById('musicIcon');
 
   // Rich collection of unique words & reactions for the running button and floating badges
   const uniqueWords = [
@@ -805,7 +805,7 @@
       setTimeout(() => spawnFallingPetal(), i * 50);
     }
 
-    showToast('Cherished memories with Madhuri! ♡ 🌸📸');
+    showToast('Cherished memories of Madhuri! ♡ 🌸📸');
   }
 
   if (toMemoriesBtn) {
@@ -1160,6 +1160,14 @@
     // Start continuous falling flower petals animation
     startFlowerDrop();
 
+    // Ensure music is playing
+    if (audio && audio.paused) {
+      audio.play().then(() => {
+        if (musicBtn) musicBtn.classList.add('playing');
+        if (musicIcon) musicIcon.textContent = '🎶';
+      }).catch(() => {});
+    }
+
     showToast('A special gift for Madhuri! ♡ Tap the box to open! 🎁');
   }
 
@@ -1167,20 +1175,60 @@
     yesBtn.addEventListener('click', proceedToNextStep);
   }
 
-  // Music toggle
-  if (musicBtn && audio) {
-    musicBtn.addEventListener('click', async () => {
+  // Music logic (continuous infinite loop happybirthday.mp3)
+  if (audio) {
+    audio.loop = true;
+
+    const playMusicSafely = () => {
+      audio.play().then(() => {
+        if (musicBtn) musicBtn.classList.add('playing');
+        if (musicIcon) musicIcon.textContent = '🎶';
+      }).catch(() => {
+        // Autoplay policy prevented immediate playback; waiting for user interaction
+      });
+    };
+
+    // Try playing immediately upon opening the page
+    playMusicSafely();
+
+    // Automatic seamless restart if needed
+    audio.addEventListener('ended', () => {
+      audio.currentTime = 0;
+      audio.play().catch(() => {});
+    });
+
+    // Auto-start music on ANY first interaction anywhere on page (clicks, touch, keys, mousemove, scroll)
+    const startAudioOnFirstInteraction = () => {
       if (audio.paused) {
-        try {
-          await audio.play();
-          musicLabel.textContent = 'Pause';
-          showToast('Playing birthday music 🎶♡');
-        } catch (err) {
-          showToast('Tip: Place birthday-music.mp3 in this folder to hear music! 🎵');
-        }
+        playMusicSafely();
+      }
+      ['click', 'touchstart', 'pointerdown', 'keydown', 'wheel', 'scroll'].forEach(evt => {
+        document.removeEventListener(evt, startAudioOnFirstInteraction);
+      });
+    };
+
+    ['click', 'touchstart', 'pointerdown', 'keydown', 'wheel', 'scroll'].forEach(evt => {
+      document.addEventListener(evt, startAudioOnFirstInteraction, { passive: true });
+    });
+  }
+
+  // Music toggle button (icon only)
+  if (musicBtn && audio) {
+    musicBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (audio.paused) {
+        audio.play().then(() => {
+          musicBtn.classList.add('playing');
+          if (musicIcon) musicIcon.textContent = '🎶';
+          showToast('Playing Birthday Song 🎶♡');
+        }).catch(() => {
+          showToast('Could not play happybirthday.mp3 🎵');
+        });
       } else {
         audio.pause();
-        musicLabel.textContent = 'Music';
+        musicBtn.classList.remove('playing');
+        if (musicIcon) musicIcon.textContent = '🎵';
+        showToast('Music paused 🔇');
       }
     });
   }
