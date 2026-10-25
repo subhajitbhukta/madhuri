@@ -11,7 +11,18 @@
   const step2 = document.getElementById('step2');
   const step3 = document.getElementById('step3');
   const step4 = document.getElementById('step4');
+  const step5 = document.getElementById('step5');
+  const step6 = document.getElementById('step6');
   const toMemoriesBtn = document.getElementById('toMemoriesBtn');
+  const toVideoBtn = document.getElementById('toVideoBtn');
+  const toWishBtn = document.getElementById('toWishBtn');
+  const videoNextNoBtn = document.getElementById('videoNextNoBtn');
+  const wishNextNoBtn = document.getElementById('wishNextNoBtn');
+  const birthdayVideo = document.getElementById('birthdayVideo');
+  const backToMemoriesBtn = document.getElementById('backToMemoriesBtn');
+  const backToVideoBtn = document.getElementById('backToVideoBtn');
+  const replayFromVideoBtn = document.getElementById('replayFromVideoBtn');
+  const replayFromWishBtn = document.getElementById('replayFromWishBtn');
   const cakeNextNoBtn = document.getElementById('cakeNextNoBtn');
   const backToCakeBtn = document.getElementById('backToCakeBtn');
   const replaySurpriseBtn = document.getElementById('replaySurpriseBtn');
@@ -780,7 +791,13 @@
       step4.classList.add('active');
     }
     if (mainWrapper) {
+      mainWrapper.classList.remove('video-mode');
       mainWrapper.classList.add('memories-mode');
+    }
+
+    // Arm Step 4 runaway No button for video step
+    if (videoNextNoBtn) {
+      setupRunawayButton(videoNextNoBtn, 'Aww, you can\'t skip the video surprise! Say YES! 🎥🥰');
     }
 
     // Celebration burst of flower petals
@@ -811,13 +828,137 @@
     backToCakeBtn.addEventListener('click', backToCake);
   }
 
+  // STEP 5: Transition to Video Tribute
+  function proceedToStep5() {
+    if (step4 && step5) {
+      step4.classList.remove('active');
+      step5.classList.add('active');
+    }
+    if (mainWrapper) {
+      mainWrapper.classList.remove('memories-mode');
+      mainWrapper.classList.add('video-mode');
+    }
+
+    // Scroll smoothly to top of card
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    launchConfetti(90);
+    for (let i = 0; i < 20; i++) {
+      setTimeout(() => spawnFallingPetal(), i * 60);
+    }
+
+    // Arm Step 5 runaway No button for final wish
+    if (wishNextNoBtn) {
+      setupRunawayButton(wishNextNoBtn, 'Hehe, you have to read the final wish! Say YES! 💌🥰');
+    }
+
+    showToast('A heartfelt video surprise for Madhuri! 🎬💖🍿');
+  }
+
+  if (toVideoBtn) {
+    toVideoBtn.addEventListener('click', proceedToStep5);
+  }
+
+  // Back from Video to Memories
+  function backToMemories() {
+    if (step5 && step4) {
+      step5.classList.remove('active');
+      step4.classList.add('active');
+    }
+    if (birthdayVideo) {
+      birthdayVideo.pause();
+    }
+    if (mainWrapper) {
+      mainWrapper.classList.remove('video-mode');
+      mainWrapper.classList.add('memories-mode');
+    }
+    showToast('Back to treasured memories! 📸✨');
+  }
+
+  if (backToMemoriesBtn) {
+    backToMemoriesBtn.addEventListener('click', backToMemories);
+  }
+
+  // STEP 6: Transition to Final Birthday Wish & Thank You
+  function proceedToStep6() {
+    if (step5 && step6) {
+      step5.classList.remove('active');
+      step6.classList.add('active');
+    }
+    if (birthdayVideo) {
+      birthdayVideo.pause();
+    }
+    if (mainWrapper) {
+      mainWrapper.classList.remove('video-mode');
+      mainWrapper.classList.add('wish-mode');
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    launchConfetti(120);
+    for (let i = 0; i < 26; i++) {
+      setTimeout(() => spawnFallingPetal(), i * 45);
+    }
+
+    showToast('From Subhajit, with all my heart ♡ 🌸💌');
+  }
+
+  if (toWishBtn) {
+    toWishBtn.addEventListener('click', proceedToStep6);
+  }
+
+  // Back from Wish to Video
+  function backToVideo() {
+    if (step6 && step5) {
+      step6.classList.remove('active');
+      step5.classList.add('active');
+    }
+    if (mainWrapper) {
+      mainWrapper.classList.remove('wish-mode');
+      mainWrapper.classList.add('video-mode');
+    }
+    showToast('Back to birthday video! 🎬✨');
+  }
+
+  if (backToVideoBtn) {
+    backToVideoBtn.addEventListener('click', backToVideo);
+  }
+
+  if (replayFromWishBtn) {
+    replayFromWishBtn.addEventListener('click', replaySurprise);
+  }
+
+  // Video Event Handlers
+  if (birthdayVideo) {
+    birthdayVideo.addEventListener('play', () => {
+      launchConfetti(45);
+    });
+    birthdayVideo.addEventListener('ended', () => {
+      launchConfetti(120);
+      showToast('Happy 25th Birthday Madhuri! Forever loved! 💖🎉');
+    });
+  }
+
+  if (replayFromVideoBtn) {
+    replayFromVideoBtn.addEventListener('click', replaySurprise);
+  }
+
   // Replay from beginning (Step 1)
   function replaySurprise() {
+    if (step6) step6.classList.remove('active');
+    if (step5) step5.classList.remove('active');
     if (step4) step4.classList.remove('active');
     if (step3) step3.classList.remove('active');
     if (step2) step2.classList.remove('active');
     if (step1) step1.classList.add('active');
-    if (mainWrapper) mainWrapper.classList.remove('memories-mode');
+    if (mainWrapper) {
+      mainWrapper.classList.remove('memories-mode', 'video-mode', 'wish-mode');
+    }
+
+    if (birthdayVideo) {
+      birthdayVideo.pause();
+      birthdayVideo.currentTime = 0;
+    }
 
     // Reset Step 1 No button
     if (noBtn) {
@@ -828,6 +969,24 @@
       noBtn.style.transform = '';
       const span = noBtn.querySelector('.btn-no-text');
       if (span) span.textContent = 'No 🙈';
+    }
+
+    // Reset Step 4 No button
+    if (videoNextNoBtn) {
+      videoNextNoBtn.style.position = '';
+      videoNextNoBtn.style.left = '';
+      videoNextNoBtn.style.top = '';
+      videoNextNoBtn.style.display = 'inline-flex';
+      videoNextNoBtn.style.transform = '';
+    }
+
+    // Reset Step 5 No button
+    if (wishNextNoBtn) {
+      wishNextNoBtn.style.position = '';
+      wishNextNoBtn.style.left = '';
+      wishNextNoBtn.style.top = '';
+      wishNextNoBtn.style.display = 'inline-flex';
+      wishNextNoBtn.style.transform = '';
     }
 
     // Reset Gift box

@@ -63,52 +63,16 @@
 
         <!-- Window Inner Content -->
         <div class="window-body">
-          <!-- Mascot / Sticker Tile -->
-          <div class="mascot-wrapper">
-            <div class="mascot-card">
-              <!-- High Quality Animated Kawaii Bear with Pom-poms -->
-              <svg class="mascot-svg" viewBox="0 0 160 140" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- Sparkles surrounding mascot -->
-                <circle cx="28" cy="30" r="3" fill="#FFC93C" />
-                <circle cx="135" cy="28" r="3.5" fill="#FF85A2" />
-                <circle cx="22" cy="95" r="2.5" fill="#FF9EAA" />
-                <circle cx="138" cy="98" r="3" fill="#FFC93C" />
-                
-                <!-- Ears -->
-                <circle cx="48" cy="46" r="22" fill="#FFFFFF" stroke="#F1D1DC" stroke-width="3" />
-                <circle cx="48" cy="46" r="13" fill="#FFD3E2" />
-                <circle cx="112" cy="46" r="22" fill="#FFFFFF" stroke="#F1D1DC" stroke-width="3" />
-                <circle cx="112" cy="46" r="13" fill="#FFD3E2" />
-                
-                <!-- Bear Head & Body -->
-                <rect x="35" y="40" width="90" height="78" rx="42" fill="#FFFFFF" stroke="#F1D1DC" stroke-width="3" />
-                
-                <!-- Eyes -->
-                <ellipse cx="62" cy="72" rx="4.5" ry="6" fill="#2E2428" />
-                <circle cx="60.5" cy="69.5" r="2" fill="#FFFFFF" />
-                <ellipse cx="98" cy="72" rx="4.5" ry="6" fill="#2E2428" />
-                <circle cx="96.5" cy="69.5" r="2" fill="#FFFFFF" />
-                
-                <!-- Nose & Cute Smile -->
-                <ellipse cx="80" cy="78" rx="4" ry="3" fill="#523946" />
-                <path d="M75 83C77.5 86 82.5 86 85 83" stroke="#523946" stroke-width="2.5" stroke-linecap="round" />
-                
-                <!-- Blushing Cheeks -->
-                <circle cx="50" cy="79" r="7.5" fill="#FF8FA3" opacity="0.65" />
-                <circle cx="110" cy="79" r="7.5" fill="#FF8FA3" opacity="0.65" />
-                
-                <!-- Pompom Left (Waving) -->
-                <g class="pompom-left">
-                  <circle cx="34" cy="92" r="17" fill="#FFD23F" stroke="#ECA400" stroke-width="2.5" />
-                  <path d="M26 83L29 88M34 80L34 86M42 84L38 88M24 93L29 93M40 94L44 94M27 99L32 97M39 101L36 96" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
-                </g>
-                
-                <!-- Pompom Right (Waving) -->
-                <g class="pompom-right">
-                  <circle cx="126" cy="92" r="17" fill="#FFD23F" stroke="#ECA400" stroke-width="2.5" />
-                  <path d="M118 83L121 88M126 80L126 86M134 84L130 88M116 93L121 93M132 94L136 94M119 99L124 97M131 101L128 96" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
-                </g>
-              </svg>
+          <!-- Elegant Birthday Portrait Card -->
+          <div class="portrait-card-wrapper">
+            <div class="portrait-card">
+              <img 
+                src="Elegant 25th Birthday Celebration.png" 
+                alt="Happy 25th Birthday Madhuri" 
+                class="portrait-card-img"
+                draggable="false"
+              />
+              <div class="portrait-card-shine"></div>
             </div>
           </div>
 
@@ -201,12 +165,17 @@
             <div class="box-shadow-ground"></div>
           </div>
 
-          <!-- Surprise message that pops out when opened -->
+          <!-- Surprise card that pops out when opened -->
           <div class="gift-surprise-card" id="giftSurprise">
-            <div class="surprise-sparkle">✨ 🎂 ✨</div>
-            <h3 class="surprise-title">Happy Birthday, Madhuri! ♡</h3>
-            <p class="surprise-text">You are truly one of a kind. May all your sweetest dreams and wishes come true this year! 🌸💖</p>
-            <div class="surprise-decor">🎉 🎀 🎁 🎈</div>
+            <div class="gift-surprise-photo-frame">
+              <img 
+                src="Elegant Blue Ribbon 25th Birthday Card.png" 
+                alt="25th Birthday Celebration Card for Madhuri" 
+                class="gift-surprise-img" 
+                draggable="false"
+              />
+              <div class="gift-card-shine"></div>
+            </div>
           </div>
         </div>
 
@@ -223,7 +192,12 @@
 
           <!-- Go to next options (Appears AFTER box is opened!) -->
           <div class="gift-next-area" id="giftNextArea" style="display: none;">
-            <p class="gift-question">Would you like to see what's next? ✨💖</p>
+            <div class="gift-sweet-note">
+              <p class="note-text">
+                🌸 Happy 25th Birthday, Madhuri! You are truly one of a kind. May all your sweetest dreams and wishes come true! 💖✨
+              </p>
+            </div>
+            <p class="gift-question">Would you like to see what's next? ✨🎂</p>
             <div class="actions-wrapper">
               <button class="btn-yes" id="giftNextYesBtn" aria-label="Yes, continue to next surprise">
                 <span class="btn-text">Yes! Next →</span>
@@ -610,17 +584,170 @@
 
           </div>
 
-          <!-- Bottom Banner Card with Final Sweet Wish and Restart Option -->
+          <!-- Bottom Banner Card with Sweet Wish and Next to Video Step -->
           <div class="memories-footer-card">
             <div class="footer-heart-badge">💖 HAPPY 25TH BIRTHDAY MADHURI 💖</div>
             <p class="footer-wish-quote">
               &ldquo;May every day of your 25th year bring you as much happiness, warmth, and magic as you bring to everyone around you!&rdquo;
             </p>
             <div class="memories-footer-actions">
-              <button class="replay-btn" id="replaySurpriseBtn" aria-label="Replay surprise from step 1">
-                <span>↺ Replay Surprise from Beginning</span>
+              <button class="btn-yes video-next-btn" id="toVideoBtn" aria-label="Watch special birthday video">
+                <span class="btn-text">Watch Special Birthday Video 🎬✨ →</span>
+                <span class="btn-shine"></span>
+              </button>
+              <button class="btn-no" id="videoNextNoBtn" aria-label="No option">
+                <span class="btn-no-text">No 🙈</span>
               </button>
             </div>
+            <div class="memories-sub-actions">
+              <button class="replay-btn" id="replaySurpriseBtn" aria-label="Replay surprise from step 1">
+                <span>↺ Replay from Beginning</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 5: Special Birthday Video Tribute -->
+    <section class="step-card video-step" id="step5" data-step="5">
+      <div class="window-frame video-window">
+        <!-- macOS-style Window Header -->
+        <div class="window-header">
+          <div class="window-controls">
+            <span class="dot dot-close"></span>
+            <span class="dot dot-minimize"></span>
+            <span class="dot dot-expand"></span>
+          </div>
+          <div class="url-bar">
+            <span class="url-lock">🎬</span>
+            <span class="url-text">madhuri-special-video.love</span>
+            <span class="url-sparkle">✨</span>
+          </div>
+          <div class="header-dots">
+            <span class="mini-dot"></span>
+            <span class="mini-dot"></span>
+            <span class="mini-dot"></span>
+          </div>
+        </div>
+
+        <!-- Window Inner Content: Clean Video Only -->
+        <div class="window-body video-body">
+          <div class="video-header-section">
+            <h1 class="video-main-title">A Special Video Just for Madhuri ♡</h1>
+          </div>
+
+          <!-- Video Player Container -->
+          <div class="video-player-wrapper">
+            <div class="video-player-frame" id="videoPlayerFrame">
+              <video 
+                id="birthdayVideo" 
+                class="main-birthday-video"
+                controls
+                playsinline
+                poster="cake-24.jpg"
+                preload="metadata"
+              >
+                <source src="video.mp4" type="video/mp4">
+                <source src="birthday-video.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </div>
+
+          <!-- Video Navigation Actions -->
+          <div class="video-nav-buttons">
+            <button class="btn-subtle" id="backToMemoriesBtn" aria-label="Back to memories">
+              <span>← Back to Memories 📸</span>
+            </button>
+            <button class="btn-yes video-to-wish-btn" id="toWishBtn" aria-label="Read final birthday wish">
+              <span class="btn-text">Final Birthday Wish 💌✨ →</span>
+              <span class="btn-shine"></span>
+            </button>
+            <button class="btn-no" id="wishNextNoBtn" aria-label="No option">
+              <span class="btn-no-text">No 🙈</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 6: Final Birthday Wish & Thank You From Subhajit -->
+    <section class="step-card wish-step" id="step6" data-step="6">
+      <div class="window-frame wish-window">
+        <!-- macOS-style Window Header -->
+        <div class="window-header">
+          <div class="window-controls">
+            <span class="dot dot-close"></span>
+            <span class="dot dot-minimize"></span>
+            <span class="dot dot-expand"></span>
+          </div>
+          <div class="url-bar">
+            <span class="url-lock">💌</span>
+            <span class="url-text">madhuri-final-wish.love</span>
+            <span class="url-sparkle">✨</span>
+          </div>
+          <div class="header-dots">
+            <span class="mini-dot"></span>
+            <span class="mini-dot"></span>
+            <span class="mini-dot"></span>
+          </div>
+        </div>
+
+        <!-- Window Inner Content: Heartfelt Letter -->
+        <div class="window-body wish-body">
+          <!-- Top Badge -->
+          <div class="wish-milestone-badge">
+            <span class="badge-icon">💖</span>
+            <span>A SPECIAL WISH FOR YOUR 25TH MILESTONE</span>
+            <span class="badge-icon">✨</span>
+          </div>
+
+          <h1 class="wish-main-heading">To Dearest Madhuri ♡</h1>
+
+          <!-- Luxury Letter Paper Card -->
+          <div class="letter-card">
+            <div class="letter-quote-mark">“</div>
+            <div class="letter-paragraphs">
+              <p class="wish-sentence">
+                Happy 25th Birthday, Madhuri! On this wonderful milestone, I wish you a lifetime filled with boundless joy, radiant smiles, and unforgettable moments.
+              </p>
+              <p class="wish-sentence">
+                May your journey ahead be blessed with immense success, opening new doors to every ambitious goal and dream you hold close to your heart.
+              </p>
+              <p class="wish-sentence">
+                May you always find peace, strength, and unwavering courage in everything you pursue, surrounded by genuine love and good health every single day.
+              </p>
+              <p class="wish-sentence">
+                You are a truly extraordinary person whose kindness, warmth, and grace illuminate the lives of everyone fortunate enough to know you.
+              </p>
+              <p class="wish-sentence">
+                Never stop believing in the magic within you, because the world shines so much brighter with your wonderful presence in it.
+              </p>
+              <p class="wish-sentence">
+                Thank you for being such an incredible person and for all the happiness and precious memories you bring into my life.
+              </p>
+            </div>
+
+            <!-- Signature & Thank You From Subhajit -->
+            <div class="letter-signature-block">
+              <div class="signature-thankyou">Thank you, with all my heart ♡</div>
+              <div class="signature-name">— Subhajit ✨</div>
+            </div>
+            
+            <div class="letter-shine"></div>
+          </div>
+
+          <!-- Final Actions -->
+          <div class="wish-actions-row">
+            <button class="btn-subtle" id="backToVideoBtn" aria-label="Back to video">
+              <span>← Back to Video 🎬</span>
+            </button>
+            <button class="replay-btn" id="replayFromWishBtn" aria-label="Replay surprise from beginning">
+              <span>↺ Replay Surprise from Beginning</span>
+            </button>
           </div>
 
         </div>

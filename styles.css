@@ -298,59 +298,78 @@ body {
   text-align: center;
 }
 
-/* Kawaii Mascot Box */
-.mascot-wrapper {
-  margin-bottom: 24px;
-}
-
-.mascot-card {
-  width: 145px;
-  height: 125px;
-  background: linear-gradient(145deg, #fff3f7 0%, #ffe5ef 100%);
-  border: 2px solid #ffd4e5;
-  border-radius: 26px;
+/* Elegant Birthday Portrait Card (Step 1) */
+.portrait-card-wrapper {
+  margin-bottom: 18px;
   display: flex;
-  align-items: center;
   justify-content: center;
-  box-shadow: 0 12px 28px rgba(220, 95, 145, 0.16);
+  perspective: 1000px;
+}
+
+.portrait-card {
   position: relative;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  width: 250px;
+  max-width: 80vw;
+  border-radius: 22px;
+  overflow: hidden;
+  background: #ffffff;
+  border: 3px solid #ffffff;
+  box-shadow: 
+    0 18px 45px rgba(220, 60, 115, 0.22),
+    0 6px 16px rgba(0, 0, 0, 0.08),
+    0 0 0 1.5px rgba(255, 182, 193, 0.65);
+  animation: cardGentleFloat 4.2s ease-in-out infinite alternate;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
+  cursor: pointer;
 }
 
-.mascot-card:hover {
-  transform: translateY(-4px) scale(1.04);
+.portrait-card:hover {
+  transform: translateY(-8px) scale(1.03) rotate(0.5deg);
+  box-shadow: 
+    0 26px 55px rgba(220, 60, 115, 0.32),
+    0 8px 22px rgba(0, 0, 0, 0.12),
+    0 0 0 2px rgba(255, 64, 125, 0.75);
 }
 
-.mascot-svg {
-  width: 125px;
-  height: 110px;
-  overflow: visible;
-  animation: bearBreathe 3s ease-in-out infinite;
+.portrait-card-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  border-radius: 19px;
+  transition: transform 0.4s ease;
 }
 
-@keyframes bearBreathe {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
+.portrait-card:hover .portrait-card-img {
+  transform: scale(1.02);
 }
 
-.pompom-left {
-  transform-origin: 34px 92px;
-  animation: wavePompomLeft 1.2s ease-in-out infinite alternate;
+.portrait-card-shine {
+  position: absolute;
+  top: 0;
+  left: -130%;
+  width: 80%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 100%
+  );
+  transform: skewX(-24deg);
+  pointer-events: none;
+  animation: portraitShineSweep 5s infinite ease-in-out;
 }
 
-.pompom-right {
-  transform-origin: 126px 92px;
-  animation: wavePompomRight 1.2s ease-in-out infinite alternate;
+@keyframes portraitShineSweep {
+  0%, 75% { left: -130%; }
+  100% { left: 160%; }
 }
 
-@keyframes wavePompomLeft {
-  0% { transform: rotate(-12deg) translateY(0); }
-  100% { transform: rotate(16deg) translateY(-5px); }
-}
-
-@keyframes wavePompomRight {
-  0% { transform: rotate(12deg) translateY(0); }
-  100% { transform: rotate(-16deg) translateY(-5px); }
+@keyframes cardGentleFloat {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-6px) rotate(0.8deg); }
+  100% { transform: translateY(2px) rotate(-0.5deg); }
 }
 
 /* Text Hierarchy */
@@ -718,22 +737,36 @@ body {
 /* Surprise card inside gift box */
 .gift-surprise-card {
   position: absolute;
-  inset: 12px;
-  background: linear-gradient(135deg, #fff7fa 0%, #ffe9f2 100%);
-  border-radius: 20px;
-  border: 1.5px solid #fec0d5;
-  padding: 24px 18px;
+  inset: 0;
+  border-radius: 24px;
+  overflow: hidden;
+  background: #ffffff;
+  border: 3px solid #ffffff;
+  padding: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
   opacity: 0;
-  transform: scale(0.6) translateY(20px);
+  transform: scale(0.65) translateY(24px);
   pointer-events: none;
   z-index: 10;
-  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 10px 30px rgba(220, 60, 110, 0.15);
+  transition: all 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 
+    0 22px 50px rgba(220, 60, 110, 0.28),
+    0 6px 18px rgba(0, 0, 0, 0.08),
+    0 0 0 1.5px rgba(255, 182, 193, 0.65);
+}
+
+.gift-box.opened {
+  height: 310px;
+  animation: none;
+}
+
+.gift-box.opened .gift-box-base {
+  opacity: 0;
+  transform: scale(0.92);
+  pointer-events: none;
 }
 
 .gift-box.opened .gift-surprise-card {
@@ -757,28 +790,67 @@ body {
   opacity: 0;
 }
 
-.surprise-sparkle {
-  font-size: 22px;
-  margin-bottom: 8px;
+.gift-surprise-photo-frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  overflow: hidden;
 }
 
-.surprise-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 20px;
-  color: #9c1d4b;
-  margin-bottom: 8px;
+.gift-surprise-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 20px;
+  transition: transform 0.4s ease;
 }
 
-.surprise-text {
-  font-size: 13px;
-  line-height: 1.55;
-  color: #6d4256;
+.gift-surprise-card:hover .gift-surprise-img {
+  transform: scale(1.025);
+}
+
+.gift-card-shine {
+  position: absolute;
+  top: 0;
+  left: -130%;
+  width: 80%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.35) 50%,
+    transparent 100%
+  );
+  transform: skewX(-24deg);
+  pointer-events: none;
+  animation: giftCardShineSweep 5s infinite ease-in-out;
+}
+
+@keyframes giftCardShineSweep {
+  0%, 75% { left: -130%; }
+  100% { left: 160%; }
+}
+
+.gift-sweet-note {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 182, 193, 0.55);
+  border-radius: 16px;
+  padding: 12px 18px;
   margin-bottom: 12px;
+  max-width: 380px;
+  box-shadow: 0 4px 14px rgba(220, 60, 110, 0.08);
 }
 
-.surprise-decor {
-  font-size: 20px;
-  letter-spacing: 4px;
+.note-text {
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: #7a3d56;
+  font-weight: 600;
+  margin: 0;
 }
 
 /* ----------------- Continuous Flower Petals Drop Animation ----------------- */
@@ -2258,3 +2330,351 @@ body {
     height: 240px;
   }
 }
+
+/* ==========================================================================
+   STEP 5: Special Birthday Video Step
+   ========================================================================== */
+
+.main-wrapper.video-mode {
+  max-width: 760px;
+}
+
+.video-step {
+  display: none;
+  animation: cardEnter 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.video-step.active {
+  display: block;
+}
+
+.video-window {
+  width: 100%;
+}
+
+.video-body {
+  padding: 24px 24px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.video-header-section {
+  text-align: center;
+  margin: 0 auto;
+}
+
+.video-main-title {
+  font-family: var(--font-cute, 'Fredoka', cursive, sans-serif);
+  font-size: 26px;
+  font-weight: 700;
+  color: #ff3377;
+  background: linear-gradient(135deg, #ff2a70 0%, #ff6b95 50%, #9933ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 4px 0 0;
+  letter-spacing: -0.2px;
+}
+
+/* Video Player Wrapper & Frame */
+.video-player-wrapper {
+  width: 100%;
+  max-width: 680px;
+}
+
+.video-player-frame {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+  border-radius: 20px;
+  overflow: hidden;
+  background: #110815;
+  box-shadow: 
+    0 16px 40px rgba(255, 51, 119, 0.22),
+    0 4px 12px rgba(0, 0, 0, 0.18),
+    0 0 0 2px rgba(255, 182, 193, 0.5);
+}
+
+.main-birthday-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #0a040d;
+  border: none;
+}
+
+/* Navigation Buttons below video */
+.video-nav-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+
+.btn-subtle {
+  padding: 11px 22px;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1.5px solid rgba(255, 79, 134, 0.35);
+  color: #993366;
+  font-family: var(--font-main);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(255, 79, 134, 0.1);
+  transition: all 0.25s ease;
+}
+
+.btn-subtle:hover {
+  background: #fff;
+  color: #ff2a70;
+  border-color: #ff2a70;
+  box-shadow: 0 6px 18px rgba(255, 51, 119, 0.2);
+  transform: translateY(-2px);
+}
+
+.btn-subtle:active {
+  transform: scale(0.97);
+}
+
+/* Step 4 Next to Video Button Styling */
+.video-next-btn {
+  padding: 13px 28px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.memories-sub-actions {
+  margin-top: 10px;
+}
+
+@media (max-width: 640px) {
+  .video-body {
+    padding: 18px 14px 24px;
+    gap: 14px;
+  }
+  .video-main-title {
+    font-size: 21px;
+  }
+  .video-player-frame {
+    border-radius: 16px;
+  }
+  .video-nav-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+  .btn-subtle, .video-nav-buttons .replay-btn {
+    width: 100%;
+  }
+}
+
+/* ==========================================================================
+   STEP 6: Final Birthday Wish & Thank You from Subhajit
+   ========================================================================== */
+
+.main-wrapper.wish-mode {
+  max-width: 680px;
+}
+
+.wish-step {
+  display: none;
+  animation: cardEnter 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.wish-step.active {
+  display: block;
+}
+
+.wish-window {
+  width: 100%;
+}
+
+.wish-body {
+  padding: 30px 28px 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.wish-milestone-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(255, 64, 125, 0.1), rgba(255, 182, 193, 0.25));
+  border: 1px solid rgba(255, 79, 134, 0.35);
+  color: #d8205f;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.wish-main-heading {
+  font-family: var(--font-cute, 'Fredoka', cursive, sans-serif);
+  font-size: clamp(26px, 4.5vw, 32px);
+  font-weight: 700;
+  color: #ff3377;
+  background: linear-gradient(135deg, #ff2a70 0%, #ff6b95 50%, #9933ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+/* Luxury Letter Paper Card */
+.letter-card {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  background: linear-gradient(145deg, #ffffff 0%, #fffbfd 60%, #fff3f8 100%);
+  border-radius: 24px;
+  border: 1.5px solid #f9d2e2;
+  box-shadow: 
+    0 20px 48px rgba(220, 60, 110, 0.16),
+    0 6px 16px rgba(0, 0, 0, 0.04),
+    0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+  padding: 30px 28px 26px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.letter-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 
+    0 24px 54px rgba(220, 60, 110, 0.22),
+    0 0 0 2px rgba(255, 182, 193, 0.5);
+}
+
+.letter-quote-mark {
+  position: absolute;
+  top: -15px;
+  left: 18px;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 90px;
+  line-height: 1;
+  color: rgba(255, 64, 125, 0.12);
+  pointer-events: none;
+  user-select: none;
+}
+
+.letter-paragraphs {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  text-align: left;
+}
+
+.wish-sentence {
+  font-family: var(--font-main, 'Plus Jakarta Sans', sans-serif);
+  font-size: 14.5px;
+  line-height: 1.68;
+  color: #4a293b;
+  font-weight: 500;
+  margin: 0;
+}
+
+.wish-sentence:first-child {
+  font-size: 15.5px;
+  font-weight: 600;
+  color: #b81c54;
+}
+
+/* Signature Block */
+.letter-signature-block {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1.5px dashed rgba(255, 107, 149, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.signature-thankyou {
+  font-size: 15px;
+  font-weight: 700;
+  font-style: italic;
+  color: #d8205f;
+  letter-spacing: 0.2px;
+}
+
+.signature-name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 19px;
+  font-weight: 800;
+  color: #9c1d4b;
+  letter-spacing: 0.5px;
+}
+
+.letter-shine {
+  position: absolute;
+  top: 0;
+  left: -130%;
+  width: 80%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 100%
+  );
+  transform: skewX(-24deg);
+  pointer-events: none;
+  animation: letterShineSweep 6s infinite ease-in-out;
+}
+
+@keyframes letterShineSweep {
+  0%, 75% { left: -130%; }
+  100% { left: 160%; }
+}
+
+/* Actions Row in Step 6 */
+.wish-actions-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+  width: 100%;
+}
+
+.video-to-wish-btn {
+  padding: 13px 26px;
+  font-size: 14.5px;
+  font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  .wish-body {
+    padding: 22px 16px 28px;
+  }
+  .letter-card {
+    padding: 22px 18px 20px;
+  }
+  .wish-sentence {
+    font-size: 13.5px;
+    line-height: 1.6;
+  }
+  .wish-actions-row {
+    flex-direction: column;
+  }
+  .wish-actions-row .btn-subtle,
+  .wish-actions-row .replay-btn {
+    width: 100%;
+  }
+}
+
+
+
