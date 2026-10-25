@@ -1160,8 +1160,10 @@
     // Start continuous falling flower petals animation
     startFlowerDrop();
 
-    // Ensure music is playing
-    if (audio && audio.paused) {
+    // Ensure music is unmuted and playing
+    if (audio) {
+      audio.muted = false;
+      audio.volume = 1.0;
       audio.play().then(() => {
         if (musicBtn) musicBtn.classList.add('playing');
         if (musicIcon) musicIcon.textContent = '🎶';
@@ -1175,40 +1177,134 @@
     yesBtn.addEventListener('click', proceedToNextStep);
   }
 
-  // Music logic (continuous infinite loop happybirthday.mp3)
+  // =========================================================================
+  // Bulletproof Audio Engine (Infinite Loop happybirthday.mp3 + Autoplay Force)
+  // =========================================================================
   if (audio) {
     audio.loop = true;
+    audio.preload = 'auto';
 
-    const playMusicSafely = () => {
-      audio.play().then(() => {
-        if (musicBtn) musicBtn.classList.add('playing');
-        if (musicIcon) musicIcon.textContent = '🎶';
-      }).catch(() => {
-        // Autoplay policy prevented immediate playback; waiting for user interaction
+    const setMusicPlayingUI = () => {
+      if (musicBtn) musicBtn.classList.add('playing');
+      if (musicIcon) musicIcon.textContent = '🎶';
+    };
+
+    const setMusicPausedUI = () => {
+      if (musicBtn) musicBtn.classList.remove('playing');
+      if (musicIcon) musicIcon.textContent = '🎵';
+    };
+
+    // Core play routine: handles unmuting and playing safely
+    const forcePlayMusic = () => {
+      try {
+        const ctx = getAudioContext();
+        if (ctx && ctx.state === 'suspended') {
+          ctx.resume().catch(() => {});
+        }
+      } catch (e) {}
+
+      audio.muted = false;
+      audio.volume = 1.0;
+
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        return playPromise.then(() => {
+          setMusicPlayingUI();
+          return true;
+        }).catch(() => {
+          // If unmuted playback is blocked by browser autoplay policy before user gesture:
+          // Start playing muted so audio stream starts decoding/buffering immediately
+          audio.muted = true;
+          return audio.play().then(() => {
+            return false;
+          }).catch(() => false);
+        });
+      }
+      return Promise.resolve(false);
+    };
+
+    // 1. Try starting immediately upon opening the page without any click
+    forcePlayMusic();
+
+    // 2. Try starting on all lifecycle and visibility events
+    ['DOMContentLoaded', 'load', 'pageshow', 'focus'].forEach(evt => {
+      window.addEventListener(evt, () => {
+        if (audio.paused || audio.muted) {
+          forcePlayMusic();
+        }
+      }, { passive: true });
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden && (audio.paused || audio.muted)) {
+        forcePlayMusic();
+      }
+    });
+
+    // 3. User interaction unlock:
+    // When anyone clicks the link/website, touches screen, moves mouse, presses key, or scrolls:
+    // Capturing listeners on both window & document ensure 100% interception before any child stops propagation
+    const interactionEvents = [
+      'pointerdown',
+      'mousedown',
+      'touchstart',
+      'touchend',
+      'click',
+      'keydown',
+      'wheel',
+      'scroll'
+    ];
+
+    const unlockOnInteraction = () => {
+      forcePlayMusic().then((isPlayingUnmuted) => {
+        if (isPlayingUnmuted || (!audio.paused && !audio.muted)) {
+          // Once audio is unmuted and playing, remove capture listeners
+          interactionEvents.forEach(evt => {
+            window.removeEventListener(evt, unlockOnInteraction, true);
+            document.removeEventListener(evt, unlockOnInteraction, true);
+          });
+        }
       });
     };
 
-    // Try playing immediately upon opening the page
-    playMusicSafely();
+    interactionEvents.forEach(evt => {
+      window.addEventListener(evt, unlockOnInteraction, true);
+      document.addEventListener(evt, unlockOnInteraction, true);
+    });
 
-    // Automatic seamless restart if needed
+    // Also attempt gentle unmute on cursor movement if audio was started muted
+    const tryUnmuteOnMove = () => {
+      if (audio.muted) {
+        audio.muted = false;
+        audio.volume = 1.0;
+        audio.play().then(() => {
+          setMusicPlayingUI();
+          window.removeEventListener('pointermove', tryUnmuteOnMove);
+          window.removeEventListener('mousemove', tryUnmuteOnMove);
+        }).catch(() => {
+          audio.muted = true; // Revert if still blocked
+        });
+      }
+    };
+    window.addEventListener('pointermove', tryUnmuteOnMove, { passive: true });
+    window.addEventListener('mousemove', tryUnmuteOnMove, { passive: true });
+
+    // 4. Infinite seamless loop enforcement
     audio.addEventListener('ended', () => {
       audio.currentTime = 0;
       audio.play().catch(() => {});
     });
 
-    // Auto-start music on ANY first interaction anywhere on page (clicks, touch, keys, mousemove, scroll)
-    const startAudioOnFirstInteraction = () => {
+    audio.addEventListener('pause', () => {
       if (audio.paused) {
-        playMusicSafely();
+        setMusicPausedUI();
       }
-      ['click', 'touchstart', 'pointerdown', 'keydown', 'wheel', 'scroll'].forEach(evt => {
-        document.removeEventListener(evt, startAudioOnFirstInteraction);
-      });
-    };
+    });
 
-    ['click', 'touchstart', 'pointerdown', 'keydown', 'wheel', 'scroll'].forEach(evt => {
-      document.addEventListener(evt, startAudioOnFirstInteraction, { passive: true });
+    audio.addEventListener('play', () => {
+      if (!audio.muted) {
+        setMusicPlayingUI();
+      }
     });
   }
 
@@ -1216,9 +1312,11 @@
   if (musicBtn && audio) {
     musicBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      if (audio.paused) {
+      if (audio.paused || audio.muted) {
+        audio.muted = false;
+        audio.volume = 1.0;
         audio.play().then(() => {
-          musicBtn.classList.add('playing');
+          if (musicBtn) musicBtn.classList.add('playing');
           if (musicIcon) musicIcon.textContent = '🎶';
           showToast('Playing Birthday Song 🎶♡');
         }).catch(() => {
@@ -1226,7 +1324,7 @@
         });
       } else {
         audio.pause();
-        musicBtn.classList.remove('playing');
+        if (musicBtn) musicBtn.classList.remove('playing');
         if (musicIcon) musicIcon.textContent = '🎵';
         showToast('Music paused 🔇');
       }
