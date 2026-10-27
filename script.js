@@ -12,16 +12,10 @@
   const step3 = document.getElementById('step3');
   const step4 = document.getElementById('step4');
   const step5 = document.getElementById('step5');
-  const step6 = document.getElementById('step6');
   const toMemoriesBtn = document.getElementById('toMemoriesBtn');
-  const toVideoBtn = document.getElementById('toVideoBtn');
   const toWishBtn = document.getElementById('toWishBtn');
-  const videoNextNoBtn = document.getElementById('videoNextNoBtn');
   const wishNextNoBtn = document.getElementById('wishNextNoBtn');
-  const birthdayVideo = document.getElementById('birthdayVideo');
   const backToMemoriesBtn = document.getElementById('backToMemoriesBtn');
-  const backToVideoBtn = document.getElementById('backToVideoBtn');
-  const replayFromVideoBtn = document.getElementById('replayFromVideoBtn');
   const replayFromWishBtn = document.getElementById('replayFromWishBtn');
   const cakeNextNoBtn = document.getElementById('cakeNextNoBtn');
   const backToCakeBtn = document.getElementById('backToCakeBtn');
@@ -51,58 +45,12 @@
   const musicBtn = document.getElementById('musicToggle');
   const musicIcon = document.getElementById('musicIcon');
 
-  // Rich collection of unique words & reactions for the running button and floating badges
-  const uniqueWords = [
-    'Nu-uh! 🙈',
-    'Nope! 😜',
-    'Nu-uhhh! 🙅‍♀️',
-    'No way! 💨',
-    'Nuh-uh! Not today! 💃',
-    'Too slow! 🏃‍♂️💨',
-    'Can’t catch me! 💨',
-    'Nu-uh, try again! 😂',
-    'Nooooope! 🏃‍♀️💨',
-    'Still No? 🙈',
-    'Nu-uhhh Madhuri! 🎀',
-    'Wrong button! 🚨',
-    'Please say Yes! 🥺👉👈',
-    'Nu-uh! Not happening! 🤭',
-    'Only YES! 💕',
-    'Nope nope nope! 🌪️',
-    'Error 404: No not found 🚫',
-    'Madhuri says YES! 💖',
-    'Nuh-uh! Think again! 🤔',
-    'Nu-uh! Can’t touch this! 🎶',
-    'Mission Impossible! 🕶️',
-    'Big NOPE! 🚫',
-    'Nu-uh! Only YES allowed! 🥰',
-    'Try YES cutie! ✨',
-    'Nice attempt haha 😚',
-    'Never in a million years! 🤣',
-    'Access Denied: No ❌',
-    'Look at me go! 🚀',
-    'Surrender to YES! 🥰',
-    'Keep chasing! 🏃‍♀️',
-    'You really thought? 🙈',
-    '100% YES only! 🌸',
-    'No is on vacation! 🏖️',
-    'Just click YES! 💖',
-    'Nope! Over here! 😜',
-    'Not today! 💃',
-    'Don’t be shy, say Yes! 🎀',
-    'Nu-uh! Try again! 🤭',
-    'I believe in YES! 🪄'
-  ];
+  // Cutest Begging Popup Elements
+  const cuteBegModal = document.getElementById('cuteBegModal');
+  const cuteBegBackdrop = document.getElementById('cuteBegBackdrop');
+  const cuteBegClose = document.getElementById('cuteBegClose');
+  const cuteBegYesBtn = document.getElementById('cuteBegYesBtn');
 
-  let wordIndex = 0;
-  function getNextUniqueWord() {
-    const word = uniqueWords[wordIndex % uniqueWords.length];
-    wordIndex++;
-    return word;
-  }
-
-  let roamInterval = null;
-  let spawnedTags = [];
   let toastTimeout;
 
   // Web Audio Synthesizer for instant cute chime sounds
@@ -196,53 +144,81 @@
     };
   }
 
-  // Spawn an infinite floating roaming "Nope!" tag on the page with unique words
-  function spawnFloatingNopeTag() {
-    const tag = document.createElement('div');
-    const colorClasses = ['nope-tag-pink', 'nope-tag-yellow', 'nope-tag-purple', 'nope-tag-peach', 'nope-tag-mint'];
-    const chosenColor = colorClasses[Math.floor(Math.random() * colorClasses.length)];
-    
-    tag.className = `nope-floating-tag ${chosenColor}`;
-    const word = getNextUniqueWord();
-    tag.textContent = word;
+  // ===================================================
+  // Cutest Begging Popup Modal (Please YES Click Karo Nahh)
+  // ===================================================
+  let cuteBegAutoCloseTimer = null;
+  function openCuteBegPopup() {
+    if (!cuteBegModal) return;
+    cuteBegModal.classList.add('active');
+    showToast('Please YES click karo nahh 🥺👉👈💖');
 
-    const pos = getRandomViewportPos(110, 40);
-    tag.style.left = `${pos.x}px`;
-    tag.style.top = `${pos.y}px`;
-
-    // Interactive: hovering/clicking floating tag also makes it dodge
-    function dodgeTag() {
-      playPopSound();
-      const newPos = getRandomViewportPos(110, 40);
-      tag.style.left = `${newPos.x}px`;
-      tag.style.top = `${newPos.y}px`;
-      tag.style.transform = `scale(1.15) rotate(${(Math.random() - 0.5) * 20}deg)`;
-      setTimeout(() => {
-        tag.style.transform = 'scale(1) rotate(0deg)';
-      }, 300);
-    }
-
-    tag.addEventListener('mouseenter', dodgeTag);
-    tag.addEventListener('click', dodgeTag);
-    tag.addEventListener('touchstart', dodgeTag, { passive: true });
-
-    document.body.appendChild(tag);
-    spawnedTags.push(tag);
-
-    // Slowly drift every 3.2 seconds to keep it roaming
-    const tagDriftTimer = setInterval(() => {
-      if (!tag.parentElement) {
-        clearInterval(tagDriftTimer);
-        return;
-      }
-      const driftPos = getRandomViewportPos(110, 40);
-      tag.style.left = `${driftPos.x}px`;
-      tag.style.top = `${driftPos.y}px`;
-    }, 3200 + Math.random() * 2000);
+    // Auto-dismiss popup after 4 seconds so it doesn't linger forever
+    clearTimeout(cuteBegAutoCloseTimer);
+    cuteBegAutoCloseTimer = setTimeout(() => {
+      closeCuteBegPopup();
+    }, 4000);
   }
 
-  // Reusable Runaway Button setup with smooth dodging and infinite unique words
-  function setupRunawayButton(buttonEl, customMsg) {
+  function closeCuteBegPopup() {
+    if (cuteBegModal) {
+      cuteBegModal.classList.remove('active');
+    }
+    clearTimeout(cuteBegAutoCloseTimer);
+    if (toast) {
+      toast.classList.remove('show');
+      clearTimeout(toastTimeout);
+    }
+  }
+
+  // Hide all No buttons and clear popups so previous step's buttons/popups NEVER show on other steps
+  function hideAllNoButtons() {
+    closeCuteBegPopup();
+    [noBtn, giftNextNoBtn, cakeNextNoBtn, wishNextNoBtn].forEach(btn => {
+      if (btn) {
+        btn.classList.add('hidden');
+        btn.style.setProperty('display', 'none', 'important');
+      }
+    });
+  }
+
+  function activateStepNoButton(btn) {
+    if (!btn) return;
+    btn.classList.remove('hidden');
+    btn.style.removeProperty('display');
+    btn.style.display = 'inline-flex';
+    setupRunawayButton(btn);
+  }
+
+  function handleCuteBegYes() {
+    closeCuteBegPopup();
+    playFanfareSound();
+    launchConfetti(90);
+
+    // Automatically transition to the next step depending on active step
+    if (step1 && step1.classList.contains('active')) {
+      proceedToNextStep();
+    } else if (step3 && step3.classList.contains('active')) {
+      proceedToStep4();
+    } else if (step4 && step4.classList.contains('active')) {
+      proceedToWish();
+    }
+  }
+
+  if (cuteBegClose) {
+    cuteBegClose.addEventListener('click', closeCuteBegPopup);
+  }
+  if (cuteBegYesBtn) {
+    cuteBegYesBtn.addEventListener('click', handleCuteBegYes);
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && cuteBegModal && cuteBegModal.classList.contains('active')) {
+      closeCuteBegPopup();
+    }
+  });
+
+  // Reusable Runaway Button setup with smooth dodging & cutest popup on hover/click
+  function setupRunawayButton(buttonEl) {
     if (!buttonEl || buttonEl._isRunawayInitialized) return;
     buttonEl._isRunawayInitialized = true;
     let isFixed = false;
@@ -250,7 +226,7 @@
 
     function moveBtn() {
       const now = Date.now();
-      if (now - lastMoveTime < 60) return;
+      if (now - lastMoveTime < 70) return;
       lastMoveTime = now;
 
       playPopSound();
@@ -260,18 +236,22 @@
       const curY = rect.top;
 
       if (!isFixed) {
+        // Save original parent container and append directly to document.body!
+        // This ensures parent overflow:hidden or backdrop-filter NEVER clips or vanishes the button!
+        buttonEl._origParent = buttonEl.parentElement;
+        document.body.appendChild(buttonEl);
         buttonEl.style.position = 'fixed';
         buttonEl.style.left = `${curX}px`;
         buttonEl.style.top = `${curY}px`;
         buttonEl.style.margin = '0';
-        buttonEl.style.zIndex = '999';
+        buttonEl.style.zIndex = '100002';
         isFixed = true;
         void buttonEl.offsetWidth; // Force layout reflow
       }
 
       // Pick new random spot sufficiently far from current spot
-      const btnW = buttonEl.offsetWidth || 120;
-      const btnH = buttonEl.offsetHeight || 46;
+      const btnW = buttonEl.offsetWidth || 110;
+      const btnH = buttonEl.offsetHeight || 44;
       let pos, attempts = 0;
       do {
         pos = getRandomViewportPos(btnW, btnH);
@@ -280,43 +260,18 @@
 
       buttonEl.style.left = `${pos.x}px`;
       buttonEl.style.top = `${pos.y}px`;
-      buttonEl.style.transform = `rotate(${(Math.random() - 0.5) * 14}deg)`;
+      buttonEl.style.transform = `rotate(${(Math.random() - 0.5) * 12}deg)`;
 
-      // Update text with unique word
-      const nextPhrase = getNextUniqueWord();
+      // Keep button text clean as "No 🙈" - NEVER change to random texts!
       const textSpan = buttonEl.querySelector('.btn-no-text');
       if (textSpan) {
-        textSpan.textContent = nextPhrase;
+        textSpan.textContent = 'No 🙈';
       } else {
-        buttonEl.textContent = nextPhrase;
+        buttonEl.textContent = 'No 🙈';
       }
 
-      // Spawn multiple roaming floating "Nu-uh!" & "Nope!" tags across the page
-      spawnFloatingNopeTag();
-      setTimeout(() => spawnFloatingNopeTag(), 80);
-      if (Math.random() > 0.3) {
-        setTimeout(() => spawnFloatingNopeTag(), 160);
-      }
-
-      // Start autonomous roaming if not already roaming
-      if (!roamInterval) {
-        roamInterval = setInterval(() => {
-          const roamPos = getRandomViewportPos(buttonEl.offsetWidth || 120, buttonEl.offsetHeight || 46);
-          buttonEl.style.left = `${roamPos.x}px`;
-          buttonEl.style.top = `${roamPos.y}px`;
-          buttonEl.style.transform = `rotate(${(Math.random() - 0.5) * 12}deg)`;
-          
-          const autoWord = getNextUniqueWord();
-          const span = buttonEl.querySelector('.btn-no-text');
-          if (span) span.textContent = autoWord;
-
-          if (spawnedTags.length < 15) {
-            spawnFloatingNopeTag();
-          }
-        }, 1500);
-      }
-
-      showToast(customMsg || 'Hehe, No keeps running! Say YES! 🥰💖');
+      // Show the cutest begging popup!
+      openCuteBegPopup();
     }
 
     buttonEl.addEventListener('mouseenter', moveBtn);
@@ -342,7 +297,7 @@
   }
 
   // Setup Step 1 runaway No button
-  setupRunawayButton(noBtn, 'Hehe, No keeps running! Say YES! 🥰💖');
+  setupRunawayButton(noBtn);
 
   // Celebration Confetti generator
   function launchConfetti(count = 70) {
@@ -424,7 +379,7 @@
     if (giftNextArea) {
       giftNextArea.style.display = 'flex';
       // Arm the Step 2 "No" button with runaway animation
-      setupRunawayButton(giftNextNoBtn, 'Hehe, you have to see what\'s next! Say YES! 🥰💖');
+      activateStepNoButton(giftNextNoBtn);
     }
 
     playFanfareSound();
@@ -662,7 +617,7 @@
         blowBtnIcon.textContent = '✨';
       }
       if (blowBtnText) {
-        blowBtnText.textContent = '25th Birthday Wish Made! ♡';
+        blowBtnText.textContent = '24th Birthday Wish Made! ♡';
       }
       const blowCalloutPill = document.getElementById('blowCalloutPill');
       if (blowCalloutPill) {
@@ -680,10 +635,10 @@
       }
 
       if (cakeWishDesc) {
-        cakeWishDesc.innerHTML = '✨ <strong>Your wish has been sent to the stars!</strong> May your 25th year be blessed with boundless joy, magical moments, and infinite happiness! 🎂💖';
+        cakeWishDesc.innerHTML = '✨ <strong>Your wish has been sent to the stars!</strong> May your 24th year be blessed with boundless joy, magical moments, and infinite happiness! 🎂💖';
       }
 
-      showToast('25th Birthday Wish Made! Happy Birthday Madhuri! 🎂✨💖');
+      showToast('24th Birthday Wish Made! Happy Birthday Madhuri! 🎂✨💖');
     }, 1550);
   }
 
@@ -710,38 +665,18 @@
 
   // When "Yes! Next →" is clicked on Step 2 (after gift is opened)
   function proceedToStep3() {
+    hideAllNoButtons();
     playFanfareSound();
     launchConfetti(90);
 
-    // Stop roaming
-    if (roamInterval) {
-      clearInterval(roamInterval);
-      roamInterval = null;
-    }
-
-    // Hide Step 2 runaway No button
-    if (giftNextNoBtn) {
-      giftNextNoBtn.style.display = 'none';
-    }
-
-    // Clean up spawned floating tags
-    spawnedTags.forEach(tag => {
-      tag.style.transform = 'scale(0) rotate(20deg)';
-      tag.style.opacity = '0';
-      setTimeout(() => tag.remove(), 350);
-    });
-    spawnedTags = [];
-
-    // Switch to Step 3 (The 25th Birthday Cake Scene)
+    // Switch to Step 3 (The 24th Birthday Cake Scene)
     if (step2 && step3) {
       step2.classList.remove('active');
       step3.classList.add('active');
     }
 
     // Arm Step 3 runaway No button
-    if (cakeNextNoBtn) {
-      setupRunawayButton(cakeNextNoBtn, 'Hehe, you can\'t say no to memories! Say YES! 🥰📸');
-    }
+    activateStepNoButton(cakeNextNoBtn);
 
     showToast('Make a wish & blow the candles! 🎂🌬️✨');
     initMicBlowDetection().catch(() => {});
@@ -751,7 +686,7 @@
   if (step3 && step3.classList.contains('active')) {
     initMicBlowDetection().catch(() => {});
     if (cakeNextNoBtn) {
-      setupRunawayButton(cakeNextNoBtn, 'Hehe, you can\'t say no to memories! Say YES! 🥰📸');
+      activateStepNoButton(cakeNextNoBtn);
     }
   }
 
@@ -763,27 +698,9 @@
   // STEP 4: Transition to Memories Carousel
   // ===================================================
   function proceedToStep4() {
+    hideAllNoButtons();
     playFanfareSound();
     launchConfetti(100);
-
-    // Stop runaway timer / roaming
-    if (roamInterval) {
-      clearInterval(roamInterval);
-      roamInterval = null;
-    }
-
-    // Hide Step 3 No button
-    if (cakeNextNoBtn) {
-      cakeNextNoBtn.style.display = 'none';
-    }
-
-    // Clean up spawned tags
-    spawnedTags.forEach(tag => {
-      tag.style.transform = 'scale(0) rotate(20deg)';
-      tag.style.opacity = '0';
-      setTimeout(() => tag.remove(), 350);
-    });
-    spawnedTags = [];
 
     // Switch to Step 4 (Memories)
     if (step3 && step4) {
@@ -791,14 +708,12 @@
       step4.classList.add('active');
     }
     if (mainWrapper) {
-      mainWrapper.classList.remove('video-mode');
+      mainWrapper.classList.remove('wish-mode');
       mainWrapper.classList.add('memories-mode');
     }
 
-    // Arm Step 4 runaway No button for video step
-    if (videoNextNoBtn) {
-      setupRunawayButton(videoNextNoBtn, 'Aww, you can\'t skip the video surprise! Say YES! 🎥🥰');
-    }
+    // Arm Step 4 runaway No button for final wish step
+    activateStepNoButton(wishNextNoBtn);
 
     // Celebration burst of flower petals
     for (let i = 0; i < 24; i++) {
@@ -814,6 +729,7 @@
 
   // Back to Cake Scene
   function backToCake() {
+    hideAllNoButtons();
     if (step4 && step3) {
       step4.classList.remove('active');
       step3.classList.add('active');
@@ -821,6 +737,7 @@
     if (mainWrapper) {
       mainWrapper.classList.remove('memories-mode');
     }
+    activateStepNoButton(cakeNextNoBtn);
     showToast('Back to birthday cake! 🎂✨');
   }
 
@@ -828,68 +745,15 @@
     backToCakeBtn.addEventListener('click', backToCake);
   }
 
-  // STEP 5: Transition to Video Tribute
-  function proceedToStep5() {
+  // STEP 5: Transition to Final Birthday Wish & Thank You
+  function proceedToWish() {
+    hideAllNoButtons();
     if (step4 && step5) {
       step4.classList.remove('active');
       step5.classList.add('active');
     }
     if (mainWrapper) {
       mainWrapper.classList.remove('memories-mode');
-      mainWrapper.classList.add('video-mode');
-    }
-
-    // Scroll smoothly to top of card
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-
-    launchConfetti(90);
-    for (let i = 0; i < 20; i++) {
-      setTimeout(() => spawnFallingPetal(), i * 60);
-    }
-
-    // Arm Step 5 runaway No button for final wish
-    if (wishNextNoBtn) {
-      setupRunawayButton(wishNextNoBtn, 'Hehe, you have to read the final wish! Say YES! 💌🥰');
-    }
-
-    showToast('A heartfelt video surprise for Madhuri! 🎬💖🍿');
-  }
-
-  if (toVideoBtn) {
-    toVideoBtn.addEventListener('click', proceedToStep5);
-  }
-
-  // Back from Video to Memories
-  function backToMemories() {
-    if (step5 && step4) {
-      step5.classList.remove('active');
-      step4.classList.add('active');
-    }
-    if (birthdayVideo) {
-      birthdayVideo.pause();
-    }
-    if (mainWrapper) {
-      mainWrapper.classList.remove('video-mode');
-      mainWrapper.classList.add('memories-mode');
-    }
-    showToast('Back to treasured memories! 📸✨');
-  }
-
-  if (backToMemoriesBtn) {
-    backToMemoriesBtn.addEventListener('click', backToMemories);
-  }
-
-  // STEP 6: Transition to Final Birthday Wish & Thank You
-  function proceedToStep6() {
-    if (step5 && step6) {
-      step5.classList.remove('active');
-      step6.classList.add('active');
-    }
-    if (birthdayVideo) {
-      birthdayVideo.pause();
-    }
-    if (mainWrapper) {
-      mainWrapper.classList.remove('video-mode');
       mainWrapper.classList.add('wish-mode');
     }
 
@@ -904,89 +768,75 @@
   }
 
   if (toWishBtn) {
-    toWishBtn.addEventListener('click', proceedToStep6);
+    toWishBtn.addEventListener('click', proceedToWish);
   }
 
-  // Back from Wish to Video
-  function backToVideo() {
-    if (step6 && step5) {
-      step6.classList.remove('active');
-      step5.classList.add('active');
+  // Back from Wish to Memories
+  function backToMemories() {
+    hideAllNoButtons();
+    if (step5 && step4) {
+      step5.classList.remove('active');
+      step4.classList.add('active');
     }
     if (mainWrapper) {
       mainWrapper.classList.remove('wish-mode');
-      mainWrapper.classList.add('video-mode');
+      mainWrapper.classList.add('memories-mode');
     }
-    showToast('Back to birthday video! 🎬✨');
+    activateStepNoButton(wishNextNoBtn);
+    showToast('Back to treasured memories! 📸✨');
   }
 
-  if (backToVideoBtn) {
-    backToVideoBtn.addEventListener('click', backToVideo);
+  if (backToMemoriesBtn) {
+    backToMemoriesBtn.addEventListener('click', backToMemories);
   }
 
   if (replayFromWishBtn) {
     replayFromWishBtn.addEventListener('click', replaySurprise);
   }
 
-  // Video Event Handlers
-  if (birthdayVideo) {
-    birthdayVideo.addEventListener('play', () => {
-      launchConfetti(45);
-    });
-    birthdayVideo.addEventListener('ended', () => {
-      launchConfetti(120);
-      showToast('Happy 25th Birthday Madhuri! Forever loved! 💖🎉');
-    });
-  }
-
-  if (replayFromVideoBtn) {
-    replayFromVideoBtn.addEventListener('click', replaySurprise);
-  }
-
   // Replay from beginning (Step 1)
   function replaySurprise() {
-    if (step6) step6.classList.remove('active');
+    hideAllNoButtons();
     if (step5) step5.classList.remove('active');
     if (step4) step4.classList.remove('active');
     if (step3) step3.classList.remove('active');
     if (step2) step2.classList.remove('active');
     if (step1) step1.classList.add('active');
     if (mainWrapper) {
-      mainWrapper.classList.remove('memories-mode', 'video-mode', 'wish-mode');
-    }
-
-    if (birthdayVideo) {
-      birthdayVideo.pause();
-      birthdayVideo.currentTime = 0;
+      mainWrapper.classList.remove('memories-mode', 'wish-mode');
     }
 
     // Reset Step 1 No button
     if (noBtn) {
+      if (noBtn._origParent && noBtn.parentElement !== noBtn._origParent) {
+        noBtn._origParent.appendChild(noBtn);
+      }
       noBtn.style.position = '';
       noBtn.style.left = '';
       noBtn.style.top = '';
+      noBtn.style.margin = '';
+      noBtn.style.zIndex = '';
       noBtn.style.display = 'inline-flex';
       noBtn.style.transform = '';
+      noBtn._isRunawayInitialized = false;
       const span = noBtn.querySelector('.btn-no-text');
       if (span) span.textContent = 'No 🙈';
+      activateStepNoButton(noBtn);
     }
 
     // Reset Step 4 No button
-    if (videoNextNoBtn) {
-      videoNextNoBtn.style.position = '';
-      videoNextNoBtn.style.left = '';
-      videoNextNoBtn.style.top = '';
-      videoNextNoBtn.style.display = 'inline-flex';
-      videoNextNoBtn.style.transform = '';
-    }
-
-    // Reset Step 5 No button
     if (wishNextNoBtn) {
+      if (wishNextNoBtn._origParent && wishNextNoBtn.parentElement !== wishNextNoBtn._origParent) {
+        wishNextNoBtn._origParent.appendChild(wishNextNoBtn);
+      }
       wishNextNoBtn.style.position = '';
       wishNextNoBtn.style.left = '';
       wishNextNoBtn.style.top = '';
+      wishNextNoBtn.style.margin = '';
+      wishNextNoBtn.style.zIndex = '';
       wishNextNoBtn.style.display = 'inline-flex';
       wishNextNoBtn.style.transform = '';
+      wishNextNoBtn._isRunawayInitialized = false;
     }
 
     // Reset Gift box
@@ -1012,14 +862,20 @@
       blowCalloutPill.innerHTML = '<span class="callout-arrow-bounce">👇</span><span class="callout-msg">TAP BUTTON TO BLOW</span><span class="callout-sparkle">✨</span>';
     }
     if (cakeWishDesc) {
-      cakeWishDesc.innerHTML = 'May your 25th year be blessed with boundless laughter, sparkling moments, and endless happiness! ✨';
+      cakeWishDesc.innerHTML = 'May your 24th year be blessed with boundless laughter, sparkling moments, and endless happiness! ✨';
     }
     if (cakeNextNoBtn) {
+      if (cakeNextNoBtn._origParent && cakeNextNoBtn.parentElement !== cakeNextNoBtn._origParent) {
+        cakeNextNoBtn._origParent.appendChild(cakeNextNoBtn);
+      }
       cakeNextNoBtn.style.position = '';
       cakeNextNoBtn.style.left = '';
       cakeNextNoBtn.style.top = '';
+      cakeNextNoBtn.style.margin = '';
+      cakeNextNoBtn.style.zIndex = '';
       cakeNextNoBtn.style.display = 'inline-flex';
       cakeNextNoBtn.style.transform = '';
+      cakeNextNoBtn._isRunawayInitialized = false;
     }
 
     playFanfareSound();
@@ -1130,26 +986,9 @@
 
   // Transition to Step 2 when "Yes" is clicked on Step 1
   function proceedToNextStep() {
+    hideAllNoButtons();
     playFanfareSound();
     launchConfetti(90);
-
-    // Stop Step 1 roaming No button
-    if (roamInterval) {
-      clearInterval(roamInterval);
-      roamInterval = null;
-    }
-
-    // Hide Step 1 No button and clean up spawned tags
-    if (noBtn) {
-      noBtn.style.display = 'none';
-    }
-
-    spawnedTags.forEach(tag => {
-      tag.style.transform = 'scale(0) rotate(20deg)';
-      tag.style.opacity = '0';
-      setTimeout(() => tag.remove(), 350);
-    });
-    spawnedTags = [];
 
     // Switch from Window Card (Step 1) to Gift Box (Step 2)
     if (step1 && step2) {
