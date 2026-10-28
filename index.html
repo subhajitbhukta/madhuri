@@ -14,7 +14,7 @@
     href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Playfair+Display:ital,wght@1,400;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Great+Vibes&display=swap"
     rel="stylesheet">
 
-  <link rel="stylesheet" href="styles.css?v=16">
+  <link rel="stylesheet" href="styles.css?v=18">
 </head>
 
 <body>
@@ -43,6 +43,126 @@
   </audio>
 
 
+
+  <!-- =================================================== -->
+  <!-- INTRO: The 3D Birthday Letter Box Envelope Modal    -->
+  <!-- Tap to open, starts music & unveils the surprise!   -->
+  <!-- =================================================== -->
+  <aside class="letter-box-overlay" id="letterBoxOverlay" role="dialog" aria-modal="true"
+    aria-label="Birthday letter for Madhuri">
+    <div class="letter-box-modal">
+
+      <!-- Top Delivery Tag -->
+      <div class="delivery-badge">
+        <span class="delivery-icon">💌</span>
+        <span>A SPECIAL DELIVERY FOR YOU</span>
+        <span class="delivery-sparkle">✨</span>
+      </div>
+
+      <h2 class="letter-box-heading">To Dearest Madhuri ♡</h2>
+      <p class="letter-box-subheading">A sealed birthday letter just arrived for your 24th Birthday!</p>
+
+      <!-- The 3D Interactive Envelope -->
+      <div class="envelope-box" id="envelopeBox" role="button" tabindex="0"
+        aria-label="Tap to open your birthday letter">
+        <!-- Soft back glow -->
+        <div class="envelope-glow"></div>
+
+        <!-- Inside Letter Sheet (Slides Up When Opened) -->
+        <div class="envelope-letter" id="envelopeLetter">
+          <div class="letter-sheet-decor">
+            <span class="letter-decor-flower">🌸</span>
+            <span class="letter-decor-sparkle">✨</span>
+          </div>
+          <div class="letter-sheet-body">
+            <span class="letter-to">Dearest Madhuri,</span>
+            <p class="letter-msg">
+              Wishing you the happiest 24th Birthday! May today bring you as much radiance, sweetness, and magic as you
+              bring into this world. ♡
+            </p>
+            <div class="letter-sheet-badge">✨ OPENING YOUR SURPRISE... ✨</div>
+          </div>
+        </div>
+
+        <!-- Envelope Body & Address Card -->
+        <div class="envelope-body-base">
+          <!-- Airmail / Stamp Decor -->
+          <div class="envelope-stamp-badge">
+            <span class="stamp-postmark">30 OCT</span>
+            <span class="stamp-art">🕊️</span>
+          </div>
+
+          <!-- Handwritten style Address Card -->
+          <div class="envelope-label-card" id="envelopeLabelCard">
+            <div class="label-airmail-edge"></div>
+            <div class="label-fields">
+              <div class="label-row">
+                <span class="lbl-tag">TO:</span>
+                <span class="lbl-val name-val">Madhuri ♡</span>
+              </div>
+              <div class="label-row">
+                <span class="lbl-tag">FOR:</span>
+                <span class="lbl-val bday-val">24th Birthday Milestone 🎂</span>
+              </div>
+              <div class="label-row">
+                <span class="lbl-tag">WITH:</span>
+                <span class="lbl-val love-val">Lots of Love &amp; Smiles ✨</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Front Pocket SVG (Crisp triangular envelope fold) -->
+        <svg class="envelope-pocket-svg" viewBox="0 0 380 240" fill="none" preserveAspectRatio="none"
+          aria-hidden="true">
+          <!-- Left pocket triangle -->
+          <path d="M0,0 L190,130 L0,240 Z" fill="url(#pocketGradLeft)" />
+          <!-- Right pocket triangle -->
+          <path d="M380,0 L190,130 L380,240 Z" fill="url(#pocketGradRight)" />
+          <!-- Bottom pocket triangle -->
+          <path d="M0,240 L190,122 L380,240 Z" fill="url(#pocketGradBottom)" />
+          <defs>
+            <linearGradient id="pocketGradLeft" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#ffd5e5" />
+              <stop offset="100%" stop-color="#fcaecc" />
+            </linearGradient>
+            <linearGradient id="pocketGradRight" x1="1" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#ffd5e5" />
+              <stop offset="100%" stop-color="#fcaecc" />
+            </linearGradient>
+            <linearGradient id="pocketGradBottom" x1="0.5" y1="1" x2="0.5" y2="0">
+              <stop offset="0%" stop-color="#fcaecc" />
+              <stop offset="100%" stop-color="#ffb8d2" />
+            </linearGradient>
+          </defs>
+        </svg>
+
+        <!-- Envelope Top Triangular Flap (Folds open upwards in 3D) -->
+        <div class="envelope-top-flap" id="envelopeTopFlap">
+          <div class="flap-triangle"></div>
+        </div>
+
+        <!-- 3D Heart Wax Seal (Breaks open on tap) -->
+        <div class="wax-seal-btn" id="waxSealBtn">
+          <div class="wax-seal-outer">
+            <div class="wax-seal-inner">
+              <span class="seal-icon">💖</span>
+            </div>
+          </div>
+          <div class="seal-shine"></div>
+        </div>
+
+      </div>
+
+      <!-- Pulsing Tap Callout Button -->
+      <button class="envelope-tap-btn" id="envelopeTapBtn" aria-label="Tap to open letter">
+        <span class="tap-hand-icon">👉</span>
+        <span class="tap-label">Tap to Open Letter Box 💌</span>
+        <span class="tap-sparkle-icon">✨</span>
+      </button>
+
+    </div>
+  </aside>
 
   <!-- Main Container -->
   <main class="main-wrapper">
@@ -329,7 +449,7 @@
           <!-- Top Badge & Header -->
           <div class="memories-header-section">
             <div class="milestone-badge">🌸 CHERISHED MOMENTS 🌸</div>
-            <h1 class="memories-main-title">Some Beautiful Memories of Madhuri ♡</h1>
+            <h1 class="memories-main-title">Let’s Reminisce About Some Childhood Memories ♡</h1>
 
             <!-- Quick Controls: Pause/Play & Navigation -->
             <div class="carousel-toolbar">
@@ -365,10 +485,10 @@
                       <img src="memory-1.jpg" alt="Memory with Madhuri" loading="lazy" class="memory-img" />
                       <div class="img-glow-overlay"></div>
                     </div>
-                    <div class="polaroid-caption">
+                    <!-- <div class="polaroid-caption">
                       <span class="caption-title">Radiant Smiles ♡</span>
                       <span class="caption-date">Always shining</span>
-                    </div>
+                    </div> -->
                   </div>
 
                   <!-- Memory Card 2 -->
@@ -380,10 +500,10 @@
                       <img src="memory-2.jpg" alt="Memory with Madhuri" loading="lazy" class="memory-img" />
                       <div class="img-glow-overlay"></div>
                     </div>
-                    <div class="polaroid-caption">
+                    <!-- <div class="polaroid-caption">
                       <span class="caption-title">Cafe Delights ☕</span>
                       <span class="caption-date">Sweet treats</span>
-                    </div>
+                    </div> -->
                   </div>
 
                   <!-- Memory Card 3 -->
@@ -395,10 +515,10 @@
                       <img src="memory-3.jpg" alt="Memory with Madhuri" loading="lazy" class="memory-img" />
                       <div class="img-glow-overlay"></div>
                     </div>
-                    <div class="polaroid-caption">
+                    <!-- <div class="polaroid-caption">
                       <span class="caption-title">Sparkler Magic ✨</span>
                       <span class="caption-date">Birthday night</span>
-                    </div>
+                    </div> -->
                   </div>
 
                   <!-- Memory Card 4 -->
@@ -410,10 +530,10 @@
                       <img src="memory-4.jpg" alt="Memory with Madhuri" loading="lazy" class="memory-img" />
                       <div class="img-glow-overlay"></div>
                     </div>
-                    <div class="polaroid-caption">
+                    <!-- <div class="polaroid-caption">
                       <span class="caption-title">24 &amp; Glowing 🎂</span>
                       <span class="caption-date">30 Oct 2026</span>
-                    </div>
+                    </div> -->
                   </div>
 
                   <!-- Memory Card 5 -->
@@ -425,10 +545,10 @@
                       <img src="memory-5.jpg" alt="Memory with Madhuri" loading="lazy" class="memory-img" />
                       <div class="img-glow-overlay"></div>
                     </div>
-                    <div class="polaroid-caption">
+                    <!-- <div class="polaroid-caption">
                       <span class="caption-title">Golden Hour Joy ☀️</span>
                       <span class="caption-date">Pure happiness</span>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
 
@@ -443,10 +563,10 @@
                       <img src="memory-1.jpg" alt="Memory with Madhuri" loading="lazy" class="memory-img" />
                       <div class="img-glow-overlay"></div>
                     </div>
-                    <div class="polaroid-caption">
+                    <!-- <div class="polaroid-caption">
                       <span class="caption-title">Radiant Smiles ♡</span>
                       <span class="caption-date">Always shining</span>
-                    </div>
+                    </div> -->
                   </div>
 
                   <!-- Memory Card 2 Clone -->
@@ -458,10 +578,10 @@
                       <img src="memory-2.jpg" alt="Memory with Madhuri" loading="lazy" class="memory-img" />
                       <div class="img-glow-overlay"></div>
                     </div>
-                    <div class="polaroid-caption">
+                    <!-- <div class="polaroid-caption">
                       <span class="caption-title">Cafe Delights ☕</span>
                       <span class="caption-date">Sweet treats</span>
-                    </div>
+                    </div> -->
                   </div>
 
                   <!-- Memory Card 3 Clone -->
@@ -473,10 +593,10 @@
                       <img src="memory-3.jpg" alt="Memory with Madhuri" loading="lazy" class="memory-img" />
                       <div class="img-glow-overlay"></div>
                     </div>
-                    <div class="polaroid-caption">
+                    <!-- <div class="polaroid-caption">
                       <span class="caption-title">Sparkler Magic ✨</span>
                       <span class="caption-date">Birthday night</span>
-                    </div>
+                    </div> -->
                   </div>
 
                   <!-- Memory Card 4 Clone -->
@@ -488,10 +608,10 @@
                       <img src="memory-4.jpg" alt="Memory with Madhuri" loading="lazy" class="memory-img" />
                       <div class="img-glow-overlay"></div>
                     </div>
-                    <div class="polaroid-caption">
+                    <!-- <div class="polaroid-caption">
                       <span class="caption-title">24 &amp; Glowing 🎂</span>
                       <span class="caption-date">30 Oct 2026</span>
-                    </div>
+                    </div> -->
                   </div>
 
                   <!-- Memory Card 5 Clone -->
@@ -503,10 +623,10 @@
                       <img src="memory-5.jpg" alt="Memory with Madhuri" loading="lazy" class="memory-img" />
                       <div class="img-glow-overlay"></div>
                     </div>
-                    <div class="polaroid-caption">
+                    <!-- <div class="polaroid-caption">
                       <span class="caption-title">Golden Hour Joy ☀️</span>
                       <span class="caption-date">Pure happiness</span>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </div>
@@ -531,10 +651,10 @@
                       <img src="memory-6.jpg" alt="Memory with Madhuri" loading="lazy" class="memory-img" />
                       <div class="img-glow-overlay"></div>
                     </div>
-                    <div class="polaroid-caption">
+                    <!-- <div class="polaroid-caption">
                       <span class="caption-title">Sweet Indulgence 🍓</span>
                       <span class="caption-date">Little joys</span>
-                    </div>
+                    </div> -->
                   </div>
 
                   <!-- Memory Card 7 -->
@@ -546,10 +666,10 @@
                       <img src="memory-7.jpg" alt="Memory with Madhuri" loading="lazy" class="memory-img" />
                       <div class="img-glow-overlay"></div>
                     </div>
-                    <div class="polaroid-caption">
+                    <!-- <div class="polaroid-caption">
                       <span class="caption-title">Birthday Queen 👑</span>
                       <span class="caption-date">Sparkling joy</span>
-                    </div>
+                    </div> -->
                   </div>
 
                   <!-- Memory Card 8 -->
@@ -561,10 +681,10 @@
                       <img src="memory-8.jpg" alt="Memory with Madhuri" loading="lazy" class="memory-img" />
                       <div class="img-glow-overlay"></div>
                     </div>
-                    <div class="polaroid-caption">
+                    <!-- <div class="polaroid-caption">
                       <span class="caption-title">Forever Moments 💖</span>
                       <span class="caption-date">To infinity</span>
-                    </div>
+                    </div> -->
                   </div>
 
                   <!-- Memory Card 9 -->
@@ -576,10 +696,10 @@
                       <img src="memory-9.jpg" alt="Memory with Madhuri" loading="lazy" class="memory-img" />
                       <div class="img-glow-overlay"></div>
                     </div>
-                    <div class="polaroid-caption">
+                    <!-- <div class="polaroid-caption">
                       <span class="caption-title">Grace &amp; Wonder 💫</span>
                       <span class="caption-date">Timeless beauty</span>
-                    </div>
+                    </div> -->
                   </div>
 
                   <!-- Memory Card 10 -->
@@ -591,10 +711,10 @@
                       <img src="memory-10.jpg" alt="Memory with Madhuri" loading="lazy" class="memory-img" />
                       <div class="img-glow-overlay"></div>
                     </div>
-                    <div class="polaroid-caption">
+                    <!-- <div class="polaroid-caption">
                       <span class="caption-title">Cherished Smiles 🥂</span>
                       <span class="caption-date">Forever special</span>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
 
@@ -609,10 +729,10 @@
                       <img src="memory-6.jpg" alt="Memory with Madhuri" loading="lazy" class="memory-img" />
                       <div class="img-glow-overlay"></div>
                     </div>
-                    <div class="polaroid-caption">
+                    <!-- <div class="polaroid-caption">
                       <span class="caption-title">Sweet Indulgence 🍓</span>
                       <span class="caption-date">Little joys</span>
-                    </div>
+                    </div> -->
                   </div>
 
                   <!-- Memory Card 7 Clone -->
@@ -624,10 +744,10 @@
                       <img src="memory-7.jpg" alt="Memory with Madhuri" loading="lazy" class="memory-img" />
                       <div class="img-glow-overlay"></div>
                     </div>
-                    <div class="polaroid-caption">
+                    <!-- <div class="polaroid-caption">
                       <span class="caption-title">Birthday Queen 👑</span>
                       <span class="caption-date">Sparkling joy</span>
-                    </div>
+                    </div> -->
                   </div>
 
                   <!-- Memory Card 8 Clone -->
@@ -639,10 +759,10 @@
                       <img src="memory-8.jpg" alt="Memory with Madhuri" loading="lazy" class="memory-img" />
                       <div class="img-glow-overlay"></div>
                     </div>
-                    <div class="polaroid-caption">
+                    <!-- <div class="polaroid-caption">
                       <span class="caption-title">Forever Moments 💖</span>
                       <span class="caption-date">To infinity</span>
-                    </div>
+                    </div> -->
                   </div>
 
                   <!-- Memory Card 9 Clone -->
@@ -654,10 +774,10 @@
                       <img src="memory-9.jpg" alt="Memory with Madhuri" loading="lazy" class="memory-img" />
                       <div class="img-glow-overlay"></div>
                     </div>
-                    <div class="polaroid-caption">
+                    <!-- <div class="polaroid-caption">
                       <span class="caption-title">Grace &amp; Wonder 💫</span>
                       <span class="caption-date">Timeless beauty</span>
-                    </div>
+                    </div> -->
                   </div>
 
                   <!-- Memory Card 10 Clone -->
@@ -669,10 +789,10 @@
                       <img src="memory-10.jpg" alt="Memory with Madhuri" loading="lazy" class="memory-img" />
                       <div class="img-glow-overlay"></div>
                     </div>
-                    <div class="polaroid-caption">
+                    <!-- <div class="polaroid-caption">
                       <span class="caption-title">Cherished Smiles 🥂</span>
                       <span class="caption-date">Forever special</span>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </div>
@@ -699,6 +819,9 @@
             <div class="memories-sub-actions">
               <button class="replay-btn" id="replaySurpriseBtn" aria-label="Replay surprise from step 1">
                 <span>↺ Replay from Beginning</span>
+              </button>
+              <button class="replay-btn" id="replayLetterBtn" aria-label="Re-open birthday letter box">
+                <span>💌 Re-open Letter Box</span>
               </button>
             </div>
           </div>
@@ -743,36 +866,29 @@
           <!-- Luxury Letter Paper Card -->
           <div class="letter-card">
             <div class="letter-quote-mark">“</div>
+
             <div class="letter-paragraphs">
               <p class="wish-sentence">
-                Happy 24th Birthday, Madhuri! On this wonderful milestone, I wish you a lifetime filled with boundless
-                joy, radiant smiles, and unforgettable moments.
+                Happy 24th Birthday, Madhuri! ❤️ I wish you lots of success and happiness in life. I always want to see
+                you
+                achieve your dreams and reach new heights.
               </p>
+
               <p class="wish-sentence">
-                May your journey ahead be blessed with immense success, opening new doors to every ambitious goal and
-                dream you hold close to your heart.
+                Keep growing, keep smiling, and never stop believing in yourself. No matter what life brings, remember
+                that
+                I'll always be cheering for you.
               </p>
+
               <p class="wish-sentence">
-                May you always find peace, strength, and unwavering courage in everything you pursue, surrounded by
-                genuine love and good health every single day.
-              </p>
-              <p class="wish-sentence">
-                You are a truly extraordinary person whose kindness, warmth, and grace illuminate the lives of everyone
-                fortunate enough to know you.
-              </p>
-              <p class="wish-sentence">
-                Never stop believing in the magic within you, because the world shines so much brighter with your
-                wonderful presence in it.
-              </p>
-              <p class="wish-sentence">
-                Thank you for being such an incredible person and for all the happiness and precious memories you bring
-                into my life.
+                Enjoy every day, make beautiful memories, and live your life to the fullest. You deserve all the
+                happiness
+                and success in the world. ✨
               </p>
             </div>
 
-            <!-- Signature & Thank You From Subhajit -->
             <div class="letter-signature-block">
-              <div class="signature-thankyou">Thank you, with all my heart ♡</div>
+              <div class="signature-thankyou">Always wishing the best for you ♡</div>
               <div class="signature-name">— Subhajit ✨</div>
             </div>
 
@@ -786,6 +902,9 @@
             </button>
             <button class="replay-btn" id="replayFromWishBtn" aria-label="Replay surprise from beginning">
               <span>↺ Replay Surprise from Beginning</span>
+            </button>
+            <button class="replay-btn" id="replayLetterWishBtn" aria-label="Re-open birthday letter box">
+              <span>💌 Re-open Letter Box</span>
             </button>
           </div>
 
@@ -864,7 +983,7 @@
     <span>Crafted with lots of ♡ just for Madhuri</span>
   </footer>
 
-  <script src="script.js?v=17"></script>
+  <script src="script.js?v=18"></script>
 </body>
 
 </html>

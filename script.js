@@ -26,6 +26,16 @@
   const dualCarousel = document.getElementById('dualCarousel');
   const mainWrapper = document.querySelector('.main-wrapper');
 
+  // Intro 3D Letter Box Elements
+  const letterBoxOverlay = document.getElementById('letterBoxOverlay');
+  const envelopeBox = document.getElementById('envelopeBox');
+  const envelopeTapBtn = document.getElementById('envelopeTapBtn');
+  const waxSealBtn = document.getElementById('waxSealBtn');
+  const replayLetterBtn = document.getElementById('replayLetterBtn');
+  const replayLetterWishBtn = document.getElementById('replayLetterWishBtn');
+
+  let forcePlayMusic = () => Promise.resolve(false);
+
   // Modal elements
   const memoryModal = document.getElementById('memoryModal');
   const modalCloseBtn = document.getElementById('modalCloseBtn');
@@ -1034,7 +1044,7 @@
     };
 
     // Core play routine: handles unmuting and playing safely
-    const forcePlayMusic = () => {
+    forcePlayMusic = () => {
       try {
         const ctx = getAudioContext();
         if (ctx && ctx.state === 'suspended') {
@@ -1169,4 +1179,82 @@
       }
     });
   }
+
+  // ===================================================
+  // INTRO: 3D Birthday Letter Box & Envelope Opening
+  // ===================================================
+  let letterOpened = false;
+
+  function openLetterBox() {
+    if (letterOpened) return;
+    letterOpened = true;
+
+    // Immediately un-mute and play birthday song
+    if (audio) {
+      audio.muted = false;
+      audio.volume = 1.0;
+    }
+    forcePlayMusic();
+
+    // Fanfare, chime and confetti celebrations
+    playPopSound();
+    playFanfareSound();
+    launchConfetti(85);
+    for (let i = 0; i < 22; i++) {
+      setTimeout(() => spawnFallingPetal(), i * 35);
+    }
+
+    // Animate envelope opening (flap rotates 3D, wax seal breaks, letter rises)
+    if (envelopeBox) {
+      envelopeBox.classList.add('opened');
+    }
+
+    showToast('A heartfelt letter for Madhuri! ♡ Opening surprise... 💌');
+
+    // After letter peeks out (1.35s), smoothly unveil the main surprise site
+    setTimeout(() => {
+      if (letterBoxOverlay) {
+        letterBoxOverlay.classList.add('fade-out');
+        setTimeout(() => {
+          letterBoxOverlay.style.display = 'none';
+        }, 850);
+      }
+    }, 1350);
+  }
+
+  function resetLetterBox() {
+    letterOpened = false;
+    if (envelopeBox) {
+      envelopeBox.classList.remove('opened');
+    }
+    if (letterBoxOverlay) {
+      letterBoxOverlay.style.display = 'flex';
+      void letterBoxOverlay.offsetWidth;
+      letterBoxOverlay.classList.remove('fade-out');
+    }
+    replaySurprise();
+  }
+
+  if (envelopeBox) {
+    envelopeBox.addEventListener('click', openLetterBox);
+  }
+  if (envelopeTapBtn) {
+    envelopeTapBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openLetterBox();
+    });
+  }
+  if (waxSealBtn) {
+    waxSealBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openLetterBox();
+    });
+  }
+  if (replayLetterBtn) {
+    replayLetterBtn.addEventListener('click', resetLetterBox);
+  }
+  if (replayLetterWishBtn) {
+    replayLetterWishBtn.addEventListener('click', resetLetterBox);
+  }
 })();
+
